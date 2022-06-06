@@ -5,8 +5,11 @@ namespace App\Entity;
 use App\Repository\PropertyRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Cocur\Slugify\Slugify;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PropertyRepository::class)]
+#[UniqueEntity("title")]
 class Property
 {
     const HEAT = [
@@ -20,12 +23,14 @@ class Property
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(min: 5, max: 255)]
     private $title;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $description;
 
     #[ORM\Column(type: 'integer')]
+    #[Assert\Range(min: 10, max: 400)]
     private $surface;
 
     #[ORM\Column(type: 'integer')]
@@ -50,6 +55,7 @@ class Property
     private $address;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Regex("/^[0-9]{5}$/")]
     private $postal_code;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
